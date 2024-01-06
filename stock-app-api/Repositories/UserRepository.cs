@@ -17,9 +17,9 @@ namespace stock_app_api.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ApplicationDbContext _db;
+        private readonly StockAppContext _db;
         private readonly JwtConfig _jwtConfig;
-        public UserRepository(ApplicationDbContext db, IOptions<JwtConfig> jwtConfig)
+        public UserRepository(StockAppContext db, IOptions<JwtConfig> jwtConfig)
         {
             _db = db;
             _jwtConfig = jwtConfig.Value;

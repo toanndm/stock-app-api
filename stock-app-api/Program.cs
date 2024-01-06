@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using stock_app_api.Configurations;
 using stock_app_api.DataAccess;
+using stock_app_api.Models;
 using stock_app_api.Repositories;
 using stock_app_api.Repositories.IRepository;
 using stock_app_api.Services;
@@ -14,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ApplicationDbContext>(options 
+builder.Services.AddDbContext<StockAppContext>(options 
     => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 builder.Services.AddAuthentication(options =>

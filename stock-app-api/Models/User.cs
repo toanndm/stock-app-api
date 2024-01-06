@@ -1,44 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
 
-namespace stock_app_api.Models
+namespace stock_app_api.Models;
+
+public partial class User
 {
-    [Table("users")]
-    public class User
-    {
-        [Key]
-        [Column("user_id")]
-        public int UserId { get; set; }
+    public int UserId { get; set; }
 
-        [Required]
-        [Column("user_name")]
-        [MaxLength(100)]
-        public string UserName { get; set; } = "";
+    public string UserName { get; set; } = null!;
 
-        [Required]
-        [Column("hashed_password")]
-        [MaxLength(200)]
-        public string HashedPassword { get; set; } = "";
+    public string HashedPassword { get; set; } = null!;
 
-        [Required]
-        [Column("email")]
-        [MaxLength(200)]
-        public string Email { get; set; } = "";
+    public string Email { get; set; } = null!;
 
-        [Required]
-        [Column("phone")]
-        [MaxLength(20)]
-        public string Phone { get; set; } = "";
+    public string Phone { get; set; } = null!;
 
-        [Column("full_name")]
-        [MaxLength(100)]
-        public string FullName { get; set; } = "";
+    public string? FullName { get; set; }
 
-        [Column("date_of_birth")]
-        public DateTime? DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
 
-        [Column("country")]
-        [MaxLength(100)]
-        public string Country { get; set; } = "";
-    }
+    public string? Country { get; set; }
+
+    public virtual ICollection<LinkedBankAccount> LinkedBankAccounts { get; set; } = new List<LinkedBankAccount>();
+
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+
+    public virtual ICollection<UserDevice> UserDevices { get; set; } = new List<UserDevice>();
 }
