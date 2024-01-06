@@ -6,5 +6,7 @@ namespace stock_app_api.Services.IServices
     public interface IUserService
     {
         Task<User?> Register(RegisterVM registerVM);
+        Task<String> Login(LoginViewModel loginViewModel);
+        
     }
 }

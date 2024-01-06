@@ -9,5 +9,6 @@ namespace stock_app_api.Repositories.IRepository
         Task<User?> GetByUserName(string username);
         Task<User?> GetByEmail(string email);
         Task<User?> Create(RegisterVM registerVM);
+        Task<String> Login(LoginViewModel loginViewModel);
     }
 }

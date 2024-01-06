@@ -13,6 +13,11 @@ namespace stock_app_api.Services
             _userRepository = userRepository;
         }
 
+        public async Task<string> Login(LoginViewModel loginViewModel)
+        {
+            return await _userRepository.Login(loginViewModel);
+        }
+
         public async Task<User?> Register(RegisterVM registerVM)
         {
 
