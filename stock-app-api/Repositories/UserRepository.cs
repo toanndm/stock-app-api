@@ -28,14 +28,15 @@ namespace stock_app_api.Repositories
         {
             //Call procedure SQL
             IEnumerable<User> users = await _db.Users.FromSqlRaw(
-                "EXEC dbo.RegisterUser @username, @password, @email, @phone, @fullName, @dateOfBirth, @country",
+                "EXEC dbo.RegisterUser @username, @password, @email, @phone, @fullName, @dateOfBirth, @country, @role",
                 new SqlParameter("@username", registerVM.Username ?? ""),
                 new SqlParameter("@password", registerVM.Password),
                 new SqlParameter("@email", registerVM.Email),
                 new SqlParameter("@phone", registerVM.Phone ?? ""),
                 new SqlParameter("@fullName", registerVM.FullName ?? ""),
                 new SqlParameter("@dateOfBirth", registerVM.DateOfBirth),
-                new SqlParameter("@country", registerVM.Country ?? "")
+                new SqlParameter("@country", registerVM.Country ?? ""),
+                new SqlParameter("@role", registerVM.Role ?? "")
             ).ToListAsync();
             User? user = users.FirstOrDefault();
             return user;
@@ -75,6 +76,7 @@ namespace stock_app_api.Repositories
                     Subject = new ClaimsIdentity(new[]
                     {
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                        new Claim(ClaimTypes.Role, user.Role??"User")
                     }),
                     Expires = DateTime.UtcNow.AddDays(2),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature

@@ -20,6 +20,7 @@ public partial class User
     public DateOnly? DateOfBirth { get; set; }
 
     public string? Country { get; set; }
+    public string? Role { get; set; }
 
     public virtual ICollection<LinkedBankAccount> LinkedBankAccounts { get; set; } = new List<LinkedBankAccount>();
 

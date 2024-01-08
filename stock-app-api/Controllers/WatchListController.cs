@@ -18,7 +18,7 @@ namespace stock_app_api.Controllers
             _watchListRepository = watchListRepository;
         }
         [HttpGet("get")]
-        [Authorize]
+        [Authorize()]
         public async Task<IActionResult> GetWatchList()
         {
             try

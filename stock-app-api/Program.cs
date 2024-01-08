@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using stock_app_api.Configurations;
@@ -7,6 +8,7 @@ using stock_app_api.Repositories;
 using stock_app_api.Repositories.IRepository;
 using stock_app_api.Services;
 using stock_app_api.Services.IServices;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,8 +33,13 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JwtConfig:SecretKey").Value)),
         RequireExpirationTime = true,
-        ValidateLifetime = true 
+        ValidateLifetime = true,
+        RoleClaimType = ClaimTypes.Role
     };
+});
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
 });
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();

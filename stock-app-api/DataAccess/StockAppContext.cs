@@ -480,6 +480,7 @@ public partial class StockAppContext : DbContext
 
             entity.HasIndex(e => e.Email, "UQ__users__AB6E61646090D873").IsUnique();
 
+            entity.Property(e => e.Role).HasColumnName("role");
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.Country)
                 .HasMaxLength(100)

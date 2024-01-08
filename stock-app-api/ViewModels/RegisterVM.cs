@@ -15,5 +15,6 @@ namespace stock_app_api.ViewModels
         public String? FullName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public String? Country { get; set; }
+        public String Role { get; set; } = "User";
     }
 }
