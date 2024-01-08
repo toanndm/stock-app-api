@@ -10,4 +10,6 @@ public partial class MarketIndex
     public string Name { get; set; } = null!;
 
     public string Symbol { get; set; } = null!;
+
+    public virtual ICollection<IndexConstituent> IndexConstituents { get; set; } = new List<IndexConstituent>();
 }

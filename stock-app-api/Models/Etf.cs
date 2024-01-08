@@ -15,5 +15,7 @@ public partial class Etf
 
     public DateOnly? InceptionDate { get; set; }
 
+    public virtual ICollection<EtfHolding> EtfHoldings { get; set; } = new List<EtfHolding>();
+
     public virtual ICollection<EtfQuote> EtfQuotes { get; set; } = new List<EtfQuote>();
 }

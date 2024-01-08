@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using stock_app_api.Models;
 
-namespace stock_app_api.Models;
+namespace stock_app_api.DataAccess;
 
 public partial class StockAppContext : DbContext
 {
@@ -53,7 +54,6 @@ public partial class StockAppContext : DbContext
 
     public virtual DbSet<WatchList> WatchLists { get; set; }
 
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<CoveredWarrant>(entity =>
@@ -170,12 +170,13 @@ public partial class StockAppContext : DbContext
 
         modelBuilder.Entity<EtfHolding>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("etf_holdings");
+            entity.HasKey(e => e.Id).HasName("PK__etf_hold__3213E83F8B991CA3");
+
+            entity.ToTable("etf_holdings");
 
             entity.HasIndex(e => new { e.EtfId, e.StockId }, "UC_etf_stock").IsUnique();
 
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.EtfId).HasColumnName("etf_id");
             entity.Property(e => e.SharesHeld)
                 .HasColumnType("decimal(18, 4)")
@@ -185,13 +186,13 @@ public partial class StockAppContext : DbContext
                 .HasColumnType("decimal(18, 4)")
                 .HasColumnName("weight");
 
-            entity.HasOne(d => d.Etf).WithMany()
+            entity.HasOne(d => d.Etf).WithMany(p => p.EtfHoldings)
                 .HasForeignKey(d => d.EtfId)
-                .HasConstraintName("FK__etf_holdi__etf_i__114A936A");
+                .HasConstraintName("FK__etf_holdi__etf_i__3493CFA7");
 
-            entity.HasOne(d => d.Stock).WithMany()
+            entity.HasOne(d => d.Stock).WithMany(p => p.EtfHoldings)
                 .HasForeignKey(d => d.StockId)
-                .HasConstraintName("FK__etf_holdi__stock__123EB7A3");
+                .HasConstraintName("FK__etf_holdi__stock__3587F3E0");
         });
 
         modelBuilder.Entity<EtfQuote>(entity =>
@@ -223,20 +224,21 @@ public partial class StockAppContext : DbContext
 
         modelBuilder.Entity<IndexConstituent>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("index_constituent");
+            entity.HasKey(e => e.Id).HasName("PK__index_co__3213E83FC1715FBD");
 
+            entity.ToTable("index_constituent");
+
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.IndexId).HasColumnName("index_id");
             entity.Property(e => e.StockId).HasColumnName("stock_id");
 
-            entity.HasOne(d => d.Index).WithMany()
+            entity.HasOne(d => d.Index).WithMany(p => p.IndexConstituents)
                 .HasForeignKey(d => d.IndexId)
-                .HasConstraintName("FK__index_con__index__45F365D3");
+                .HasConstraintName("FK__index_con__index__30C33EC3");
 
-            entity.HasOne(d => d.Stock).WithMany()
+            entity.HasOne(d => d.Stock).WithMany(p => p.IndexConstituents)
                 .HasForeignKey(d => d.StockId)
-                .HasConstraintName("FK__index_con__stock__46E78A0C");
+                .HasConstraintName("FK__index_con__stock__31B762FC");
         });
 
         modelBuilder.Entity<LinkedBankAccount>(entity =>
@@ -345,12 +347,13 @@ public partial class StockAppContext : DbContext
 
         modelBuilder.Entity<Portfolio>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("portfolios");
+            entity.HasKey(e => e.PortfolioId).HasName("PK__portfoli__42EE526FBCC7E539");
+
+            entity.ToTable("portfolios");
 
             entity.HasIndex(e => new { e.UserId, e.StockId }, "UQ_Portfolios").IsUnique();
 
+            entity.Property(e => e.PortfolioId).HasColumnName("portfolio_id");
             entity.Property(e => e.PurchaseDate)
                 .HasColumnType("datetime")
                 .HasColumnName("purchase_date");
@@ -361,13 +364,13 @@ public partial class StockAppContext : DbContext
             entity.Property(e => e.StockId).HasColumnName("stock_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.Stock).WithMany()
+            entity.HasOne(d => d.Stock).WithMany(p => p.Portfolios)
                 .HasForeignKey(d => d.StockId)
-                .HasConstraintName("FK__portfolio__stock__5EBF139D");
+                .HasConstraintName("FK__portfolio__stock__2A164134");
 
-            entity.HasOne(d => d.User).WithMany()
+            entity.HasOne(d => d.User).WithMany(p => p.Portfolios)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__portfolio__user___5DCAEF64");
+                .HasConstraintName("FK__portfolio__user___29221CFB");
         });
 
         modelBuilder.Entity<Quote>(entity =>
@@ -562,22 +565,23 @@ public partial class StockAppContext : DbContext
 
         modelBuilder.Entity<WatchList>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("watch_lists");
+            entity.HasKey(e => e.WatchId).HasName("PK__watch_li__E83F8077C6945194");
+
+            entity.ToTable("watch_lists");
 
             entity.HasIndex(e => new { e.UserId, e.StockId }, "UC_watch_lists_users_stocks").IsUnique();
 
+            entity.Property(e => e.WatchId).HasColumnName("watch_id");
             entity.Property(e => e.StockId).HasColumnName("stock_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.Stock).WithMany()
+            entity.HasOne(d => d.Stock).WithMany(p => p.WatchLists)
                 .HasForeignKey(d => d.StockId)
-                .HasConstraintName("FK__watch_lis__stock__70DDC3D8");
+                .HasConstraintName("FK__watch_lis__stock__2DE6D218");
 
-            entity.HasOne(d => d.User).WithMany()
+            entity.HasOne(d => d.User).WithMany(p => p.WatchLists)
                 .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__watch_lis__user___6FE99F9F");
+                .HasConstraintName("FK__watch_lis__user___2CF2ADDF");
         });
 
         OnModelCreatingPartial(modelBuilder);

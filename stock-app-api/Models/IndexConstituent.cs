@@ -5,6 +5,8 @@ namespace stock_app_api.Models;
 
 public partial class IndexConstituent
 {
+    public int Id { get; set; }
+
     public int? IndexId { get; set; }
 
     public int? StockId { get; set; }

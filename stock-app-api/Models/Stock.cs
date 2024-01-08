@@ -33,7 +33,15 @@ public partial class Stock
 
     public virtual ICollection<Derivative> Derivatives { get; set; } = new List<Derivative>();
 
+    public virtual ICollection<EtfHolding> EtfHoldings { get; set; } = new List<EtfHolding>();
+
+    public virtual ICollection<IndexConstituent> IndexConstituents { get; set; } = new List<IndexConstituent>();
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
+    public virtual ICollection<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
+
     public virtual ICollection<Quote> Quotes { get; set; } = new List<Quote>();
+
+    public virtual ICollection<WatchList> WatchLists { get; set; } = new List<WatchList>();
 }

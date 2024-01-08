@@ -27,7 +27,11 @@ public partial class User
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
+    public virtual ICollection<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
+
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 
     public virtual ICollection<UserDevice> UserDevices { get; set; } = new List<UserDevice>();
+
+    public virtual ICollection<WatchList> WatchLists { get; set; } = new List<WatchList>();
 }

@@ -5,6 +5,8 @@ namespace stock_app_api.Models;
 
 public partial class EtfHolding
 {
+    public int Id { get; set; }
+
     public int? EtfId { get; set; }
 
     public int? StockId { get; set; }

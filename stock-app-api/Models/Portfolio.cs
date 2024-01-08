@@ -5,6 +5,8 @@ namespace stock_app_api.Models;
 
 public partial class Portfolio
 {
+    public int PortfolioId { get; set; }
+
     public int? UserId { get; set; }
 
     public int? StockId { get; set; }

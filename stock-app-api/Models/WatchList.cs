@@ -5,6 +5,8 @@ namespace stock_app_api.Models;
 
 public partial class WatchList
 {
+    public int WatchId { get; set; }
+
     public int? UserId { get; set; }
 
     public int? StockId { get; set; }
