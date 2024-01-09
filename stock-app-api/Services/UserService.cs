@@ -2,6 +2,7 @@
 using stock_app_api.Repositories.IRepository;
 using stock_app_api.Services.IServices;
 using stock_app_api.ViewModels;
+using stock_app_api.ViewModels.DTOs;
 
 namespace stock_app_api.Services
 {
@@ -13,12 +14,12 @@ namespace stock_app_api.Services
             _userRepository = userRepository;
         }
 
-        public async Task<string> Login(LoginViewModel loginViewModel)
+        public async Task<UserDTO> Login(LoginViewModel loginViewModel)
         {
             return await _userRepository.Login(loginViewModel);
         }
 
-        public async Task<User?> Register(RegisterVM registerVM)
+        public async Task<UserDTO> Register(RegisterVM registerVM)
         {
 
             User? existingUserByUsername = await _userRepository.GetByUserName(registerVM.Username ?? "");

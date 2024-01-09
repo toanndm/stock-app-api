@@ -19,7 +19,7 @@ namespace stock_app_api.Controllers
         }
         [HttpGet("get")]
         [Authorize()]
-        public async Task<IActionResult> GetWatchList()
+        public async Task<IActionResult> GetWatchList(int page, int limit)
         {
             try
             {
@@ -35,7 +35,10 @@ namespace stock_app_api.Controllers
                     return BadRequest();
                 }
 
-                IEnumerable<WatchList> watchLists = await _watchListRepository.GetWatchListByUserId(userIdInt);
+                IEnumerable<WatchList> watchLists = await _watchListRepository.GetWatchListByUserId(
+                    userIdInt, 
+                    page, 
+                    limit);
                 var watchListsResponse = watchLists.Select(wl => new
                 {
                     wl.WatchId,

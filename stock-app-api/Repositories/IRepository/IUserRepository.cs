@@ -1,5 +1,6 @@
 ﻿using stock_app_api.Models;
 using stock_app_api.ViewModels;
+using stock_app_api.ViewModels.DTOs;
 
 namespace stock_app_api.Repositories.IRepository
 {
@@ -8,7 +9,7 @@ namespace stock_app_api.Repositories.IRepository
         Task<User?> GetById(int  id);
         Task<User?> GetByUserName(string username);
         Task<User?> GetByEmail(string email);
-        Task<User?> Create(RegisterVM registerVM);
-        Task<String> Login(LoginViewModel loginViewModel);
+        Task<UserDTO> Create(RegisterVM registerVM);
+        Task<UserDTO> Login(LoginViewModel loginViewModel);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using stock_app_api.Models;
 using stock_app_api.Services.IServices;
 using stock_app_api.ViewModels;
+using stock_app_api.ViewModels.DTOs;
 
 namespace stock_app_api.Controllers
 {
@@ -20,7 +21,7 @@ namespace stock_app_api.Controllers
         {
             try
             {
-                User? user = await _userService.Register(registerVM);
+                UserDTO? user = await _userService.Register(registerVM);
                 return Ok(user);
             } catch (ArgumentException ex) 
             {
@@ -32,8 +33,8 @@ namespace stock_app_api.Controllers
         {
             try
             {
-                String jwt = await _userService.Login(loginViewModel);
-                return Ok(new {jwt});
+                UserDTO user = await _userService.Login(loginViewModel);
+                return Ok(user);
             }
             catch (ArgumentException ex)
             {

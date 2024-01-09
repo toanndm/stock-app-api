@@ -7,6 +7,7 @@ using stock_app_api.DataAccess;
 using stock_app_api.Models;
 using stock_app_api.Repositories.IRepository;
 using stock_app_api.ViewModels;
+using stock_app_api.ViewModels.DTOs;
 using System.Diagnostics.Metrics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Numerics;
@@ -24,7 +25,7 @@ namespace stock_app_api.Repositories
             _db = db;
             _jwtConfig = jwtConfig.Value;
         }
-        public async Task<User?> Create(RegisterVM registerVM)
+        public async Task<UserDTO> Create(RegisterVM registerVM)
         {
             //Call procedure SQL
             IEnumerable<User> users = await _db.Users.FromSqlRaw(
@@ -34,12 +35,12 @@ namespace stock_app_api.Repositories
                 new SqlParameter("@email", registerVM.Email),
                 new SqlParameter("@phone", registerVM.Phone ?? ""),
                 new SqlParameter("@fullName", registerVM.FullName ?? ""),
-                new SqlParameter("@dateOfBirth", registerVM.DateOfBirth),
+                new SqlParameter("@dateOfBirth", (object) registerVM.DateOfBirth ?? DBNull.Value),
                 new SqlParameter("@country", registerVM.Country ?? ""),
                 new SqlParameter("@role", registerVM.Role ?? "")
             ).ToListAsync();
             User? user = users.FirstOrDefault();
-            return user;
+            return getToken(user);
         }
 
         public async Task<User?> GetByEmail(string email)
@@ -57,7 +58,7 @@ namespace stock_app_api.Repositories
             return await _db.Users.FirstOrDefaultAsync(u => u.UserName == username);
         }
 
-        public async Task<string> Login(LoginViewModel loginViewModel)
+        public async Task<UserDTO> Login(LoginViewModel loginViewModel)
         {
             IEnumerable<User> users = await _db.Users.FromSqlRaw(
                 "EXEC dbo.CheckLogin @email, @password",
@@ -65,6 +66,10 @@ namespace stock_app_api.Repositories
                 new SqlParameter("@password", loginViewModel.Password)
             ).ToListAsync();
             User? user = users.FirstOrDefault();
+            return getToken(user);
+        }
+        private UserDTO getToken(User user)
+        {
             if (user != null)
             {
                 //Create JWT
@@ -84,12 +89,17 @@ namespace stock_app_api.Repositories
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 String jwt = tokenHandler.WriteToken(token);
-                return jwt;
+                return new UserDTO
+                {
+                    UserName = user.UserName,
+                    IsAdmin = (user.Role == "Admin"),
+                    Key = jwt
+                };
             }
             else
             {
                 throw new ArgumentException("Email or password invalid!");
             }
-        }   
+        }
     }
 }

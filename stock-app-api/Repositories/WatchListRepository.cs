@@ -2,6 +2,7 @@
 using stock_app_api.DataAccess;
 using stock_app_api.Models;
 using stock_app_api.Repositories.IRepository;
+using System.Collections.Generic;
 
 namespace stock_app_api.Repositories
 {
@@ -25,13 +26,12 @@ namespace stock_app_api.Repositories
             }
         }
 
-        public async Task<IEnumerable<WatchList>> GetWatchListByUserId(int userId)
+        public async Task<IEnumerable<WatchList>> GetWatchListByUserId(int userId, int page, int limit)
         {
 
-            var watchLists = await _db.WatchLists
-                .Include(w => w.User)
-                .Include(w => w.Stock)
-                .Where(w => w.UserId == userId).ToListAsync();
+            var watchLists = await _db.WatchLists.Where(w => w.UserId == userId)
+            .Skip((page - 1) * limit)
+            .Take(limit).ToListAsync();
             return watchLists;
         }
     }

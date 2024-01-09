@@ -15,7 +15,8 @@ public partial class StockAppContext : DbContext
         : base(options)
     {
     }
-
+    
+    public virtual DbSet<RealTimeQuote> RealTimeQuotes { get; set; }
     public virtual DbSet<CoveredWarrant> CoveredWarrants { get; set; }
 
     public virtual DbSet<Derivative> Derivatives { get; set; }
